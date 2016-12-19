@@ -589,12 +589,9 @@ pp.parseFunction = function (node, isStatement, allowExpressionBody, isAsync, op
     }
   }
 
-  if (isStatement && !optionalId && !this.match(tt.name) && !this.match(tt._yield)) {
-    this.unexpected();
-  }
-
-  if (this.match(tt.name) || this.match(tt._yield)) {
-    node.id = this.parseBindingIdentifier();
+  const id = this.parseFunctionId(isStatement && !optionalId);
+  if (id) {
+    node.id = id;
   }
 
   this.parseFunctionParams(node);
@@ -603,6 +600,14 @@ pp.parseFunction = function (node, isStatement, allowExpressionBody, isAsync, op
   this.state.inMethod = oldInMethod;
 
   return this.finishNode(node, isStatement ? "FunctionDeclaration" : "FunctionExpression");
+};
+
+pp.parseFunctionId = function (isRequired) {
+  if (this.match(tt.name) || this.match(tt._yield)) {
+    return this.parseBindingIdentifier();
+  } else if (isRequired) {
+    this.unexpected(null, 'Unexpected token, expected function name');
+  }
 };
 
 pp.parseFunctionParams = function (node) {

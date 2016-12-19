@@ -1,0 +1,129 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 57,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 57
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 57,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 1,
+        "column": 57
+      }
+    },
+    "sourceType": "script",
+    "body": [
+      {
+        "type": "ForStatement",
+        "start": 0,
+        "end": 57,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 57
+          }
+        },
+        "init": {
+          "type": "Capture",
+          "start": 5,
+          "end": 13,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 5
+            },
+            "end": {
+              "line": 1,
+              "column": 13
+            }
+          },
+          "name": "init"
+        },
+        "test": {
+          "type": "Capture",
+          "start": 15,
+          "end": 28,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 15
+            },
+            "end": {
+              "line": 1,
+              "column": 28
+            }
+          },
+          "name": "condition"
+        },
+        "update": {
+          "type": "Capture",
+          "start": 30,
+          "end": 40,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 30
+            },
+            "end": {
+              "line": 1,
+              "column": 40
+            }
+          },
+          "name": "update"
+        },
+        "body": {
+          "type": "BlockStatement",
+          "start": 42,
+          "end": 57,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 42
+            },
+            "end": {
+              "line": 1,
+              "column": 57
+            }
+          },
+          "directives": [],
+          "body": {
+            "type": "Capture",
+            "start": 44,
+            "end": 55,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 44
+              },
+              "end": {
+                "line": 1,
+                "column": 55
+              }
+            },
+            "name": "body"
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

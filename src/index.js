@@ -13,8 +13,10 @@ import "./tokenizer/context";
 
 import flowPlugin from "./plugins/flow";
 import jsxPlugin from "./plugins/jsx";
+import capturePlugin from "./plugins/capture";
 plugins.flow = flowPlugin;
 plugins.jsx = jsxPlugin;
+plugins.capture = capturePlugin;
 
 export function parse(input, options) {
   return new Parser(options, input).parse();

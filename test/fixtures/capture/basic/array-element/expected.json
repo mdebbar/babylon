@@ -1,0 +1,122 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 16,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 16
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 16,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 1,
+        "column": 16
+      }
+    },
+    "sourceType": "script",
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start": 0,
+        "end": 16,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 16
+          }
+        },
+        "expression": {
+          "type": "ArrayExpression",
+          "start": 0,
+          "end": 16,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 1,
+              "column": 16
+            }
+          },
+          "elements": [
+            {
+              "type": "Capture",
+              "start": 1,
+              "end": 7,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 1
+                },
+                "end": {
+                  "line": 1,
+                  "column": 7
+                }
+              },
+              "name": "x1"
+            },
+            {
+              "type": "NumericLiteral",
+              "start": 9,
+              "end": 11,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 9
+                },
+                "end": {
+                  "line": 1,
+                  "column": 11
+                }
+              },
+              "extra": {
+                "rawValue": 10,
+                "raw": "10"
+              },
+              "value": 10
+            },
+            {
+              "type": "NumericLiteral",
+              "start": 13,
+              "end": 15,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 13
+                },
+                "end": {
+                  "line": 1,
+                  "column": 15
+                }
+              },
+              "extra": {
+                "rawValue": 20,
+                "raw": "20"
+              },
+              "value": 20
+            }
+          ]
+        }
+      }
+    ],
+    "directives": []
+  }
+}

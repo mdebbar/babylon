@@ -564,29 +564,13 @@ pp.parseParenAndDistinguishExpression = function (startPos, startLoc, canBeArrow
   this.expect(tt.parenL);
 
   let innerStartPos = this.state.start, innerStartLoc = this.state.startLoc;
-  let exprList = [], first = true;
-  let refShorthandDefaultPos = { start: 0 }, spreadStart, optionalCommaStart;
+  let refShorthandDefaultPos = { start: 0 };
   let refNeedsArrowPos = { start: 0 };
-  while (!this.match(tt.parenR)) {
-    if (first) {
-      first = false;
-    } else {
-      this.expect(tt.comma, refNeedsArrowPos.start || null);
-      if (this.match(tt.parenR)) {
-        optionalCommaStart = this.state.start;
-        break;
-      }
-    }
 
-    if (this.match(tt.ellipsis)) {
-      let spreadNodeStartPos = this.state.start, spreadNodeStartLoc = this.state.startLoc;
-      spreadStart = this.state.start;
-      exprList.push(this.parseParenItem(this.parseRest(), spreadNodeStartLoc, spreadNodeStartPos));
-      break;
-    } else {
-      exprList.push(this.parseMaybeAssign(false, refShorthandDefaultPos, this.parseParenItem, refNeedsArrowPos));
-    }
-  }
+  const result = this.parseBetweenParenAndDistinguishExpression(refNeedsArrowPos, refShorthandDefaultPos);
+  const spreadStart = result && result.spreadStart;
+  const optionalCommaStart = result && result.optionalCommaStart;
+  const exprList = result && result.exprList;
 
   let innerEndPos = this.state.start;
   let innerEndLoc = this.state.startLoc;
@@ -594,14 +578,16 @@ pp.parseParenAndDistinguishExpression = function (startPos, startLoc, canBeArrow
 
   let arrowNode = this.startNodeAt(startPos, startLoc);
   if (canBeArrow && this.shouldParseArrow() && (arrowNode = this.parseArrow(arrowNode))) {
-    for (let param of exprList) {
-      if (param.extra && param.extra.parenthesized) this.unexpected(param.extra.parenStart);
+    if (Array.isArray(exprList)) {
+      for (let param of exprList) {
+        if (param.extra && param.extra.parenthesized) this.unexpected(param.extra.parenStart);
+      }
     }
 
     return this.parseArrowExpression(arrowNode, exprList);
   }
 
-  if (!exprList.length) {
+  if (Array.isArray(exprList) && !exprList.length) {
     this.unexpected(this.state.lastTokStart);
   }
   if (optionalCommaStart) this.unexpected(optionalCommaStart);
@@ -609,7 +595,9 @@ pp.parseParenAndDistinguishExpression = function (startPos, startLoc, canBeArrow
   if (refShorthandDefaultPos.start) this.unexpected(refShorthandDefaultPos.start);
   if (refNeedsArrowPos.start) this.unexpected(refNeedsArrowPos.start);
 
-  if (exprList.length > 1) {
+  if (!Array.isArray(exprList)) {
+    val = exprList;
+  } else if (exprList.length > 1) {
     val = this.startNodeAt(innerStartPos, innerStartLoc);
     val.expressions = exprList;
     this.toReferencedList(val.expressions);
@@ -623,6 +611,33 @@ pp.parseParenAndDistinguishExpression = function (startPos, startLoc, canBeArrow
   this.addExtra(val, "parenStart", startPos);
 
   return val;
+};
+
+pp.parseBetweenParenAndDistinguishExpression = function(refNeedsArrowPos, refShorthandDefaultPos) {
+  let exprList = [], spreadStart, optionalCommaStart;
+  let result = { exprList, spreadStart, optionalCommaStart };
+  let first = true;
+  while (!this.match(tt.parenR)) {
+    if (first) {
+      first = false;
+    } else {
+      this.expect(tt.comma, refNeedsArrowPos.start || null);
+      if (this.match(tt.parenR)) {
+        result.optionalCommaStart = this.state.start;
+        break;
+      }
+    }
+
+    if (this.match(tt.ellipsis)) {
+      let spreadNodeStartPos = this.state.start, spreadNodeStartLoc = this.state.startLoc;
+      result.spreadStart = this.state.start;
+      result.exprList.push(this.parseParenItem(this.parseRest(), spreadNodeStartLoc, spreadNodeStartPos));
+      break;
+    } else {
+      result.exprList.push(this.parseMaybeAssign(false, refShorthandDefaultPos, this.parseParenItem, refNeedsArrowPos));
+    }
+  }
+  return result;
 };
 
 pp.shouldParseArrow = function () {
@@ -945,7 +960,8 @@ pp.parseFunctionBody = function (node, allowExpression) {
     if (node.id) {
       this.checkLVal(node.id, true, undefined, "function name");
     }
-    for (let param of (node.params: Array<Object>)) {
+    const params = Array.isArray(node.params) ? node.params : [node.params];
+    for (let param of (params: Array<Object>)) {
       if (isStrict && param.type !== "Identifier") {
         this.raise(param.start, "Non-simple parameter in strict mode");
       }

@@ -1,6 +1,7 @@
 {
   "extends": "babel",
-  "env": {
-    "node": true
-  }
+  "rules": {
+    "semi": [2, "always"],
+    "quotes": [0, "double"]
+  },
 }

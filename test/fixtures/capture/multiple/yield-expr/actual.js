@@ -1,0 +1,1 @@
+yield {{obj}}.{{prop}}({{...args}});
