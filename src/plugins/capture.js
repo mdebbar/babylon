@@ -109,6 +109,16 @@ export default function(instance) {
     };
   });
 
+  // Skip `toAssignable` for `Capture` nodes.
+  instance.extend('toAssignable', function(inner) {
+    return function(node) {
+      if (node && node.type === CAPTURE_TYPE) {
+        return node;
+      }
+      return inner.apply(this, arguments);
+    };
+  });
+
   // Skip `toAssignableList` for `Capture` nodes.
   instance.extend('toAssignableList', function(inner) {
     return function(params) {
